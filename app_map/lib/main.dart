@@ -30,6 +30,7 @@ class _HomeState extends State<Home> {
   Marker marker;
   Circle circle;
   GoogleMapController _controller;
+  MapType myMapType = MapType.normal;
 
   static final CameraPosition initialLocation = CameraPosition(
     target: LatLng(37.01, -122.08),
@@ -109,7 +110,7 @@ class _HomeState extends State<Home> {
         title: Text('My Map'),
       ),
       body: GoogleMap(
-        mapType: MapType.normal,
+        mapType: myMapType,
         initialCameraPosition: initialLocation,
         markers: Set.of((marker != null) ? [marker] : []),
         circles: Set.of((circle != null) ? [circle] : []),
@@ -117,11 +118,58 @@ class _HomeState extends State<Home> {
           _controller = controller;
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          getCurrentLocation();
-        },
-        child: Icon(Icons.location_searching),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          SizedBox(
+            height: 130.0,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              FloatingActionButton(
+                onPressed: () {
+                  setState(() {
+                    myMapType = MapType.normal;
+                  });
+                },
+                child: Icon(Icons.refresh),
+              ),
+              SizedBox(
+                width: 10.0,
+              ),
+              FloatingActionButton(
+                onPressed: () {
+                  setState(() {
+                    myMapType = MapType.hybrid;
+                  });
+                },
+                child: Icon(Icons.satellite),
+              ),
+              SizedBox(
+                width: 10.0,
+              ),
+              FloatingActionButton(
+                onPressed: () {
+                  setState(() {
+                    myMapType = MapType.terrain;
+                  });
+                },
+                child: Icon(Icons.terrain),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 10.0,
+          ),
+          FloatingActionButton(
+            onPressed: () {
+              getCurrentLocation();
+            },
+            child: Icon(Icons.location_searching),
+          ),
+        ],
       ),
     );
   }
